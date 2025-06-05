@@ -1,0 +1,9 @@
+---
+#Default Login Creds
+
+ansible_user: "<redacted>"
+ansible_ssh_pass: "{{ p_ansible_ssh_pass }}"
+ansible_network_os: "ios"
+ansible_connection: "network_cli"
+p_ansible_ssh_pass: "<redacted>"
+backup_root: "/logs/backup"
