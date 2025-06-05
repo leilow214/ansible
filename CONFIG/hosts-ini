@@ -1,0 +1,17 @@
+[cisco_group:children]
+manila_ifc
+manila4
+
+[manila_ifc]
+C000267-017S003P ansible_host=10.51.144.3
+C000267-017S004P ansible_host=10.51.144.4
+C000267-018S001P ansible_host=10.51.144.5
+C000267-018S002P ansible_host=10.51.144.6
+C000267-018S003P ansible_host=10.51.144.7
+C000267-018S004P ansible_host=10.51.144.8
+
+[manila4]
+C000267-017S003P ansible_host=10.51.144.3
+
+[test]
+C000267-018S002P ansible_host=10.51.144.6
