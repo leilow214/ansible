@@ -1,0 +1,40 @@
+---
+- name: Capture Cisco Devices backup config output
+  hosts: test
+  gather_facts: no
+  connection: network_cli
+  tasks:
+    - name: Running show run command on this cisco device
+      cisco.ios.ios_command:
+        commands:
+          - show run
+      register: show_run_output
+
+    - name: ensure backup folder is created
+      file:
+        path: "/logs/{{ backup_root }}"
+        state: directory
+        owner: fnnsgxnexx02
+        group: priv_network_team
+        mode: 0755
+      run_once: yes
+
+    - name: ensure device rolder is created
+      file:
+        path: "/logs/{{ backup_root }}/{{ inventory_hostname }}"
+        state: directory
+        owner: fnnsgxnexx02
+        group: priv_network_team
+        mode: 0755
+
+    - name: get timestamp
+      command: date +%Y%m%d
+      register: timestamp
+
+    - name: Save show run output to file
+      copy:
+        content: "{{ show_run_output.stdout[0] }}"
+        dest: "/logs/{{ backup_root }}/{{ inventory_hostname }}/{{ inventory_hostname }}_{{ timestamp.stdout }}_config_backup.txt"
+        owner: fnnsgxnexx02
+        group: priv_network_team
+        mode: 0644
