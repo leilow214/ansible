@@ -1,0 +1,63 @@
+Installation Guide
+
+sudo apt install ansible  # For Ubuntu/Debian
+sudo yum install ansible  # For RedHat/CentOS
+
+sudo ansible-galaxy collection install cisco.ios
+
+sudo /usr/local/bin/ansible-galaxy collection install cisco.ios
+
+sudo ansible --version
+
+sudo ansible-playbook test-playbook.yml
+
+sudo /usr/local/bin/ansible-playbook backup.yml
+
+priv_network_team
+
+/logs/logs/backup
+
+//////////////////////////////
+
+Ansible commands to use
+
+#Running the Playbook
+ansible-playbook -i inventory.yml configure_vlan.yml
+
+#check ansible hosts
+cat /etc/ansible/hosts
+
+#Create a backup folder
+mkdir /etc/ansible/backup
+
+#Create crontab for ansible:
+SHELL=/bin/bash
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+MAILTO=root
+
+# For details see man 4 crontabs
+
+# Example of job definition:
+# .---------------- minute (0 - 59)
+# |  .------------- hour (0 - 23)
+# |  |  .---------- day of month (1 - 31)
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# |  |  |  |  |
+# *  *  *  *  * user-name  command to be executed
+43 12 02 * * ssingh ansible-playbook /etc/ansible/backup.yml
+
+//////////////////////////////
+
+ansible vault:
+
+ansible-vault encrypt_string "XnQvCtp74W&WZi%9EW" --vault-id dev@prompt --name p_ansible_ssh_pass
+
+sudo /usr/local/bin/ansible-playbook --ask-vault-pass backup.yml
+
+sudo /usr/local/bin/ansible-playbook --vault-password-file /path/to/my/vault-password-file site.yml
+
+//////////////////////////////
+
+ansible-vault encrypt_string --vault-password-file a_password_file 'foobar' --name 'the_secret'
+
