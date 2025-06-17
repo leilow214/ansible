@@ -1,0 +1,30 @@
+
+---
+- name: Gather device facts
+  hosts: test_ios
+  gather_facts: no
+  tasks:
+    - name: Gather facts
+      cisco.ios.ios_facts:
+        gather_subset: all
+      register: device_facts
+
+- name: Configure interface for forescout dot1x
+  hosts: test_ios
+  tasks:
+    - name: Configure range interfaces GigabitEthernet4/0/9-4/0/10
+      cisco.ios.ios_config:
+        lines:
+          - interface range Gi4/0/9-10
+          - description Forescout_Interfaces_For_Users
+          - switchport mode access
+          - authentication port-control auto
+          - mab
+          - dot1x pae authenticator
+          - dot1x timeout tx-period 7
+          - dot1x max-reauth-req 3
+          - spanning-tree portfast
+        save_when: modified
+        match: strict
+        parents: "interface range Gi4/0/9-10"
+      register: config_result
